@@ -12,7 +12,8 @@ export default class App extends Component {
         isProcessing: false,
         message: null,
         setUp: false,
-        fetchColor: true
+        fetchColor: true,
+        emptyArray: false,
     };
 
     setUpDB = () => {
@@ -63,6 +64,7 @@ export default class App extends Component {
         this.setState({
             imageURLs: [],
             isProcessing: true,
+            emptyArray: false,
             message: "Fetch all the records associated..."
         });
 
@@ -72,7 +74,8 @@ export default class App extends Component {
             console.log('RESULTS: ', results);
             if (results === false) {
                 this.setState({
-                    isProcessing: false
+                    isProcessing: false,
+                    emptyArray: true,
                 });
             }else{
                 results.data.map(item => {
@@ -124,7 +127,10 @@ export default class App extends Component {
                 />
 
                 {this.state.imageURLs
-                    ? "Here you can see the other products related to your selection's color as 92%"
+                    ? this.state.emptyArray
+                        ? "This product seems not to have a dominant color fetched by the google cloud api," +
+                        " please select another one or wait a little bit more"
+                        : "Here you can see the other products related to your selection's color at 92%"
                     : null}
 
                 {this.state.imageURLs
